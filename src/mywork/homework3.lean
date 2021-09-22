@@ -1,11 +1,4 @@
 
-
---Math
-
----mnl6sc@virginia.edu https://github.com/mlarusso/CS-2120.git
----npj5kr@virginia.edu https://github.com/njeyasingh/CS-2120.git
---fpg2kv@virginia.edu https://github.com/franklin-glance/cs2120f21.git
-
 /-
 
 
@@ -16,8 +9,6 @@ in the sense that they identify all the axioms
 and/or theorems that you use.
 
 Nikita Jeyasingh
-Mia Larusso
-Franklin Glance 
 -/
 
 -- 1
@@ -53,7 +44,7 @@ apply iff.intro ,
 assume pP,
 apply and.elim_right pP,
 assume p,
-exact and.intro p p,
+exact and.intro p p
 end
 
 
@@ -61,41 +52,30 @@ end
 example : ∀ (P Q : Prop), P ∨ Q ↔ Q ∨ P := 
 begin
   assume P Q,
-  apply iff.intro,
+  apply iff.intro _ _,
+  -- forward
   assume PQ,
-  apply or.elim PQ,
-  assume p, 
-  apply or.intro_right,exact p,
-  assume Q,
-  apply or.intro_left, exact Q,
- 
- -- GO THE OTHER WAY AROUND -- IDENTITY PROOF BASICALLY
-    assume QP,
-    apply or.elim QP,
-    -- not working for some reason
-    assume P,
-    -- I don't understand why this isn't working. I've changed it so many times I do not understand so I'm leaving it like this. 
-    apply or.intro_left, exact P,
-    assume Q,
-    apply or.intro_right, exact Q,    
+  apply or.symm,
+  exact PQ,
+  -- backward
+  assume QP,
+  apply or.symm,
+  exact QP,
 end
-
 
 --6 
 example : ∀ (P Q : Prop), P ∧ Q ↔ Q ∧ P := 
 begin
   assume P Q,
-  apply iff.intro ,
-  --forward
+  apply iff.intro,
+  -- forwards
   assume PQ,
- -- idk why this isn't working either
- -- so I am giving up on this problem
-  apply and.intro(and.elim_right PQ) 
-  and.elim_left PQ,
-  --backward
+  apply and.symm,
+  exact PQ,
+  -- same as forward
   assume QP,
-  apply and.intro(and.elim_right QP) 
-  and.elim_left QP,
+  apply and.symm,
+  exact QP,
 end
 
 
@@ -187,10 +167,11 @@ end
 example : ∀ (P Q : Prop), P ∨ (P ∧ Q) ↔ P := 
 begin
    assume P Q,
-  apply iff.intro,
-  assume left,
-  apply or.elim left,
-  assume p,exact p,
+  apply iff.intro _ _,
+  assume PQ,
+  apply or.elim PQ,
+  assume p,
+  exact p,
   assume pq,
   apply and.elim_left pq,
   --backwards
@@ -204,16 +185,12 @@ end
 example : ∀ (P : Prop), P ∨ true ↔ true := 
 begin
 assume P,
-apply iff.intro,
-assume portrue,
-apply or.elim portrue,
-assume p, apply true.intro,
--- making assumption that tru: true
-assume tru, exact true.intro,
-assume tru, 
-apply or.intro_right,
-apply tru,
-
+  apply iff.intro,
+  assume Ptrue,
+  apply true.intro,
+  assume true,
+  apply or.intro_right,
+  exact true,
 end
 
 --12
@@ -240,7 +217,8 @@ apply iff.intro,
 assume P,
 apply and.elim_left P,
 assume p,
-apply and.intro p true.intro,
+apply and.intro p
+true.intro,
 end
 
 
@@ -250,10 +228,9 @@ begin
 -- assume left case
 assume P,
 apply iff.intro,
+
 assume left,
 cases left,
 exact left_right,
--- assume that something's false
-assume NJ,
-exact false.elim NJ,
+
 end
